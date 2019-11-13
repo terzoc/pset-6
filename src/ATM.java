@@ -3,10 +3,18 @@ import java.util.Scanner;
 
 public class ATM {
     
-    private Scanner in;
-    private BankAccount activeAccount;
-    private Bank bank;
-    
+	private Scanner in;
+	private BankAccount activeAccount;
+	private Bank bank;
+	    
+	 public static final int VIEW = 1;
+	 public static final int DEPOSIT = 2;
+	 public static final int WITHDRAW = 3;
+	 public static final int LOGOUT = 4;
+	 public static final int FIRST_NAME_WIDTH = 20;
+	 public static final int LAST_NAME_WIDTH = 20;	
+	 
+   
     ////////////////////////////////////////////////////////////////////////////
     //                                                                        //
     // Refer to the Simple ATM tutorial to fill in the details of this class. //
@@ -17,18 +25,17 @@ public class ATM {
     /**
      * Constructs a new instance of the ATM class.
      */
-    
-    public ATM() {
-        this.in = new Scanner(System.in);
-        public static final int VIEW = 1;
-        public static final int DEPOSIT = 2;
-        public static final int WITHDRAW = 3;
-        public static final int LOGOUT = 4;
-        
+    	 
         public ATM() {
             in = new Scanner(System.in);
             
             activeAccount = new BankAccount(1234, 123456789, 0, new User("Ryan", "Wilson"));
+            
+            try {
+    			this.bank = new Bank();
+    		} catch (IOException e) {
+    			// cleanup any resources (i.e., the Scanner) and exit
+    		}
         }
         
         public void startup() {
@@ -55,7 +62,7 @@ public class ATM {
                         }
                     }
                 } else {
-                    if (accountNo = -1 && pin == -1) {
+                    if (accountNo == -1 && pin == -1) {
                         shutdown();
                     } else {
                         System.out.println("\nInvalid account number and/or PIN.\n");
@@ -106,12 +113,7 @@ public class ATM {
             System.exit(0);
         }
         
-        try {
-			this.bank = new Bank();
-		} catch (IOException e) {
-			// cleanup any resources (i.e., the Scanner) and exit
-		}
-    }
+    
     
     /*
      * Application execution begins here.
@@ -119,5 +121,6 @@ public class ATM {
     
     public static void main(String[] args) {
         ATM atm = new ATM();
+        atm.startup();
     }
 }

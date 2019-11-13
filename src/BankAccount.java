@@ -11,6 +11,11 @@ public class BankAccount {
         this.balance = balance;
         this.accountHolder = accountHolder;
     }
+    public BankAccount(int pin, long accountNo, User accountHolder) {
+        this.pin = pin;
+        this.accountNo = accountNo;
+        this.accountHolder = accountHolder;
+    }
     
     public int getPin() {
         return pin;
