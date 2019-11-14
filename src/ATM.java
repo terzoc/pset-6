@@ -29,7 +29,7 @@ public class ATM {
         public ATM() {
             in = new Scanner(System.in);
             
-            activeAccount = new BankAccount(1234, 123456789, 0, new User("Ryan", "Wilson"));
+//            activeAccount = new BankAccount(1234, 123456789, 0, new User("Ryan", "Wilson"));
             
             try {
     			this.bank = new Bank();
@@ -49,8 +49,8 @@ public class ATM {
                 int pin = in.nextInt();
                 
                 if (isValidLogin(accountNo, pin)) {
+                	activeAccount = new BankAccount(pin, accountNo);
                     System.out.println("\nHello, again, " + activeAccount.getAccountHolder().getFirstName() + "!\n");
-                    
                     boolean validLogin = true;
                     while (validLogin) {
                         switch (getSelection()) {
@@ -72,7 +72,7 @@ public class ATM {
         }
         
         public boolean isValidLogin(long accountNo, int pin) {
-            return accountNo == activeAccount.getAccountNo() && pin == activeAccount.getPin();
+            return bank.login(accountNo, pin) != null ? true : false;
         }
         
         public int getSelection() {

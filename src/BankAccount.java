@@ -4,6 +4,7 @@ public class BankAccount {
     private long accountNo;
     private double balance;
     private User accountHolder;
+    private Bank bank;
     
     public BankAccount(int pin, long accountNo, double balance, User accountHolder) {
         this.pin = pin;
@@ -14,6 +15,13 @@ public class BankAccount {
     public BankAccount(int pin, long accountNo, User accountHolder) {
         this.pin = pin;
         this.accountNo = accountNo;
+        this.balance = balance;
+        this.accountHolder = accountHolder;
+    }
+    public BankAccount(int pin, long accountNo) {
+        this.pin = pin;
+        this.accountNo = accountNo;
+        this.balance = balance;
         this.accountHolder = accountHolder;
     }
     
