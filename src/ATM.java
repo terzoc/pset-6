@@ -126,17 +126,22 @@ public class ATM {
         }
             
         public void withdraw() {
+        	double amount = 0;
             System.out.print("\nEnter amount: ");
-            double amount = in.nextDouble();
-                
-            int status = activeAccount.withdraw(amount);
-            if (status == ATM.INVALID) {
-                System.out.println("\nWithdrawal rejected. Amount must be greater than $0.00.\n");
-            } else if (status == ATM.INSUFFICIENT) {
-                System.out.println("\nWithdrawal rejected. Insufficient funds.\n");
-            } else if (status == ATM.SUCCESS) {
-                System.out.println("\nWithdrawal accepted.\n");
+            	try {
+            		amount = in.nextDouble();
+            	}c
+            	double amount = in.nextDouble();
+                int status = activeAccount.withdraw(amount);
+                if (status == ATM.INVALID) {
+                    System.out.println("\nWithdrawal rejected. Amount must be greater than $0.00.\n");
+                } else if (status == ATM.INSUFFICIENT) {
+                    System.out.println("\nWithdrawal rejected. Insufficient funds.\n");
+                } else if (status == ATM.SUCCESS) {
+                    System.out.println("\nWithdrawal accepted.\n");
+                }
             }
+            System.out.println("\nWithdrawal rejected. Enter vaild amount.\n");
          }
         
         public void transfer() {
