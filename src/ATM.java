@@ -10,10 +10,14 @@ public class ATM {
 	 public static final int VIEW = 1;
 	 public static final int DEPOSIT = 2;
 	 public static final int WITHDRAW = 3;
-	 public static final int LOGOUT = 4;
+	 public static final int TRANSFER = 4;
+	 public static final int LOGOUT = 5;
 	 public static final int FIRST_NAME_WIDTH = 20;
 	 public static final int LAST_NAME_WIDTH = 20;	
 	 
+	 public static final int INVALID = 0;
+     public static final int INSUFFICIENT = 1;
+     public static final int SUCCESS = 2; 
    
     ////////////////////////////////////////////////////////////////////////////
     //                                                                        //
@@ -39,13 +43,26 @@ public class ATM {
         }
         
         public void startup() {
+        	long accountNo;
+        	int pin;
             System.out.println("Welcome to the AIT ATM!\n");
+            
             while (true) {
                 System.out.print("Account No.: ");
-                long accountNo = in.nextLong();
-                
+                if(in.hasNextLong()) {
+                	accountNo = in.nextLong();
+                }else {
+                	accountNo = 0;
+                	in.nextLine();
+                }
+      
                 System.out.print("PIN        : ");
-                int pin = in.nextInt();
+                if(in.hasNextInt()) {
+                	pin = in.nextInt();
+                }else {
+                	pin = 0;
+                	in.nextLine();
+                }
                 
                 if (isValidLogin(accountNo, pin)) {
                 	activeAccount = bank.login(accountNo, pin);
@@ -56,6 +73,7 @@ public class ATM {
                             case VIEW: showBalance(); break;
                             case DEPOSIT: deposit(); break;
                             case WITHDRAW: withdraw(); break;
+                            case TRANSFER: transfer(); break;
                             case LOGOUT: validLogin = false; break;
                             default: System.out.println("\nInvalid selection.\n"); break;
                         }
@@ -85,7 +103,8 @@ public class ATM {
             System.out.println("[1] View balance");
             System.out.println("[2] Deposit money");
             System.out.println("[3] Withdraw money");
-            System.out.println("[4] Logout");
+            System.out.println("[4] Transfer money");
+            System.out.println("[5] Logout");
             
             return in.nextInt();
         }
@@ -97,19 +116,33 @@ public class ATM {
         public void deposit() {
             System.out.print("\nEnter amount: ");
             double amount = in.nextDouble();
-            
-            activeAccount.deposit(amount);
-            System.out.println();
+                
+            int status = activeAccount.deposit(amount);
+            if (status == ATM.INVALID) {
+                System.out.println("\nDeposit rejected. Amount must be greater than $0.00.\n");
+            } else if (status == ATM.SUCCESS) {
+                System.out.println("\nDeposit accepted.\n");
+            }
         }
-        
+            
         public void withdraw() {
             System.out.print("\nEnter amount: ");
             double amount = in.nextDouble();
-            
-            activeAccount.withdraw(amount);
-            System.out.println();
-        }
+                
+            int status = activeAccount.withdraw(amount);
+            if (status == ATM.INVALID) {
+                System.out.println("\nWithdrawal rejected. Amount must be greater than $0.00.\n");
+            } else if (status == ATM.INSUFFICIENT) {
+                System.out.println("\nWithdrawal rejected. Insufficient funds.\n");
+            } else if (status == ATM.SUCCESS) {
+                System.out.println("\nWithdrawal accepted.\n");
+            }
+         }
         
+        public void transfer() {
+            System.out.println("Lamo u think this works");
+        }
+            
         public void shutdown() {
             if (in != null) {
                 in.close();

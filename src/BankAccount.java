@@ -1,10 +1,11 @@
+import java.text.NumberFormat;
+
 public class BankAccount {
-        
+       
     private int pin;
     private long accountNo;
     private double balance;
     private User accountHolder;
-    private Bank bank;
     
     public BankAccount(int pin, long accountNo, double balance, User accountHolder) {
         this.pin = pin;
@@ -15,16 +16,10 @@ public class BankAccount {
     public BankAccount(int pin, long accountNo, User accountHolder) {
         this.pin = pin;
         this.accountNo = accountNo;
-        this.balance = balance;
+        this.balance = 0.0;
         this.accountHolder = accountHolder;
     }
-    public BankAccount(int pin, long accountNo) {
-        this.pin = pin;
-        this.accountNo = accountNo;
-        this.balance = balance;
-        this.accountHolder = accountHolder;
-    }
-    
+
     public int getPin() {
         return pin;
     }
@@ -33,20 +28,36 @@ public class BankAccount {
         return accountNo;
     }
     
-    public double getBalance() {
-        return balance;
+    public String getBalance() {
+        NumberFormat currency = NumberFormat.getCurrencyInstance();
+        
+        return currency.format(balance);
     }
     
     public User getAccountHolder() {
         return accountHolder;
     }
     
-    public void deposit(double amount) {
-        balance = balance + amount;
+    public int deposit(double amount) {
+        if (amount <= 0) {
+            return ATM.INVALID;    
+        } else {
+            balance = balance + amount;
+        }
+            
+        return ATM.SUCCESS;
     }
-    
-    public void withdraw(double amount) {
-        balance = balance - amount;
+
+    public int withdraw(double amount) {
+        if (amount <= 0) {
+            return ATM.INVALID;
+        } else if (amount > balance) {
+            return ATM.INSUFFICIENT;
+        } else {
+            balance = balance - amount;
+        }
+        
+        return ATM.SUCCESS;
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -79,4 +90,5 @@ public class BankAccount {
             accountHolder.serialize() +
             formatBalance();
     }
+    
 }
