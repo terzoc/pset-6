@@ -143,7 +143,13 @@ public class ATM {
          }
         
         public void transfer() {
-            System.out.println("Lamo u think this works");
+            System.out.print("\nEnter account: ");
+            long secondedAccountNumber = in.nextLong();
+            System.out.print("\nEnter amount: ");
+            double amount = in.nextDouble();
+            BankAccount transferAccount = bank.getAccount(secondedAccountNumber);
+            activeAccount.withdraw(amount);
+            transferAccount.deposit(amount);
         }
             
         public void shutdown() {
