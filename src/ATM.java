@@ -18,7 +18,7 @@ public class ATM {
 	 public static final int INVALID = 0;
      public static final int INSUFFICIENT = 1;
      public static final int SUCCESS = 2; 
-     public static final int OVERFILL = 2; 
+     public static final int OVERFILL = 3; 
    
     ////////////////////////////////////////////////////////////////////////////
     //                                                                        //
