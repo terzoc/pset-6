@@ -18,6 +18,7 @@ public class ATM {
 	 public static final int INVALID = 0;
      public static final int INSUFFICIENT = 1;
      public static final int SUCCESS = 2; 
+     public static final int OVERFILL = 2; 
    
     ////////////////////////////////////////////////////////////////////////////
     //                                                                        //
@@ -132,8 +133,10 @@ public class ATM {
     		if(validAmount) {
     			int status = activeAccount.deposit(amount);
                 if (status == ATM.INVALID) {
-                    System.out.println("\nDeposit rejected. Amount must be greater than $0.00.\n");
-                } else if (status == ATM.SUCCESS) {
+                    System.out.println("\nDeposit rejected. Amount must be greater than $0.00.\n"); 
+                } else if(status == ATM.OVERFILL) {
+                	System.out.println("\nDeposit rejected. Amount would cause balance to exceed $999,999,999,999.99.\n");
+                }else if (status == ATM.SUCCESS) {
                     System.out.println("\nDeposit accepted.\n");
                 }
     		}else {
@@ -184,14 +187,14 @@ public class ATM {
                     System.out.println("\nTransfer rejected. Insufficient funds.\n");
                 } else if (withdrawStatus == ATM.SUCCESS) {
                 	int depositStatus = transferAccount.deposit(amount);
-                    if (depositStatus == ATM.INVALID) {
-                        System.out.println("\nTransfer rejected. Amount must be greater than $0.00.\n");
+                    if (depositStatus == ATM.OVERFILL) {
+                        System.out.println("\nTransfer rejected. Amount would cause destination balance to exceed $999,999,999,999.99.\n");
                     } else if (depositStatus == ATM.SUCCESS) {
                     	System.out.println("\nTransfer accepted.\n");
                     }
                 }
             }else {
-            	System.out.println("\nTransfer rejected. Invalid account .\n");
+            	System.out.println("\nTransfer rejected. Destination account not found.\n");
             }
             
         }
