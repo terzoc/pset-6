@@ -106,7 +106,12 @@ public class ATM {
             System.out.println("[4] Transfer money");
             System.out.println("[5] Logout");
             
-            return in.nextInt();
+            if(in.hasNextInt()) {
+            	return in.nextInt();
+            }else {
+            in.nextLine();
+            return 6;
+            }
         }
         
         public void showBalance() {
