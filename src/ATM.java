@@ -56,9 +56,7 @@ public class ATM {
                 	pin = getPin();
                 	in.nextLine();
                 	login(accountNo, pin);
-                }       
-                
-            	
+                }                 	
             }
         }
         
@@ -96,6 +94,7 @@ public class ATM {
             	
             }
         }
+        
         public boolean isValidLogin(long accountNo, int pin) {
         	boolean valid = false;
         	try {
@@ -103,7 +102,6 @@ public class ATM {
         	}catch (Exception e) {
         		valid = false;
         	}
-        	
             return valid;
         }
         
@@ -145,6 +143,7 @@ public class ATM {
                 	System.out.println("\nDeposit rejected. Amount would cause balance to exceed $999,999,999,999.99.\n");
                 }else if (status == ATM.SUCCESS) {
                     System.out.println("\nDeposit accepted.\n");
+                    bank.update(activeAccount);
                     bank.save();
                 }
     		}else {
@@ -171,6 +170,7 @@ public class ATM {
                         System.out.println("\nWithdrawal rejected. Insufficient funds.\n");
                     } else if (status == ATM.SUCCESS) {
                         System.out.println("\nWithdrawal accepted.\n");
+                        bank.update(activeAccount);
                         bank.save();
                     }
         		}else {
@@ -179,9 +179,17 @@ public class ATM {
          }
         
         public void transfer() {
+        	long secondedAccountNumber;
         	boolean validAccount = true;
             System.out.print("\nEnter account: ");
-            long secondedAccountNumber = in.nextLong();
+            if(in.hasNextLong()) {
+            	secondedAccountNumber = in.nextLong();
+            }else {
+            	secondedAccountNumber = 0;
+            	in.nextLine();
+            	in.nextLine();
+            }
+
             System.out.print("Enter amount: ");
             double amount = in.nextDouble();
             if(bank.getAccount(secondedAccountNumber) == null) {
@@ -200,6 +208,7 @@ public class ATM {
                         System.out.println("\nTransfer rejected. Amount would cause destination balance to exceed $999,999,999,999.99.\n");
                     } else if (depositStatus == ATM.SUCCESS) {
                     	System.out.println("\nTransfer accepted.\n");
+                    	bank.update(activeAccount);
                     	bank.save();
                     }
                 }
@@ -221,7 +230,9 @@ public class ATM {
         	in.nextLine();
         	newUser = new User(firstName, lastName);
         	
-        	bank.createAccount(pin, newUser);
+        	BankAccount newAccount = bank.createAccount(pin, newUser);
+        	System.out.println(newAccount.getAccountNo());
+        	bank.update(newAccount);
         	bank.save();
         	return;
         	
