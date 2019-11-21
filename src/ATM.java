@@ -152,6 +152,7 @@ public class ATM {
                 	System.out.println("\nDeposit rejected. Amount would cause balance to exceed $999,999,999,999.99.\n");
                 }else if (status == ATM.SUCCESS) {
                     System.out.println("\nDeposit accepted.\n");
+                    bank.save();
                 }
     		}else {
     			System.out.println("\nDeposit rejected. Enter vaild amount.\n");
@@ -177,6 +178,7 @@ public class ATM {
                         System.out.println("\nWithdrawal rejected. Insufficient funds.\n");
                     } else if (status == ATM.SUCCESS) {
                         System.out.println("\nWithdrawal accepted.\n");
+                        bank.save();
                     }
         		}else {
         			System.out.println("\nWithdrawal rejected. Enter vaild amount.\n");
@@ -205,6 +207,7 @@ public class ATM {
                         System.out.println("\nTransfer rejected. Amount would cause destination balance to exceed $999,999,999,999.99.\n");
                     } else if (depositStatus == ATM.SUCCESS) {
                     	System.out.println("\nTransfer accepted.\n");
+                    	bank.save();
                     }
                 }
             }else {
