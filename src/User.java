@@ -16,12 +16,6 @@ public class User {
         return lastName;
     }
     
-    ////////////////////////////////////////////////////////////////////////////
-    //                                                                        //
-    // Refer to the Simple ATM tutorial to fill in the details of this class. //
-    //                                                                        //
-    ////////////////////////////////////////////////////////////////////////////
-    
     /**
      * Formats the first and last name in preparation to be written to the data file.
      * 

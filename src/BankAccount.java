@@ -61,13 +61,7 @@ public class BankAccount {
         
         return ATM.SUCCESS;
     }
-    
-    ////////////////////////////////////////////////////////////////////////////
-    //                                                                        //
-    // Refer to the Simple ATM tutorial to fill in the details of this class. //
-    //                                                                        //
-    ////////////////////////////////////////////////////////////////////////////
-    
+
     /*
      * Formats the account balance in preparation to be written to the data file.
      * 
