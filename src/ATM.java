@@ -14,7 +14,7 @@ public class ATM {
 	 public static final int TRANSFER = 4;
 	 public static final int LOGOUT = 5;
 	 public static final int FIRST_NAME_WIDTH = 20;
-	 public static final int LAST_NAME_WIDTH = 20;	
+	 public static final int LAST_NAME_WIDTH = 30;	
 	 
 	 public static final int INVALID = 0;
      public static final int INSUFFICIENT = 1;
@@ -54,14 +54,13 @@ public class ATM {
                 }else {
                 	accountNo = 0;
                 	pin = getPin();
-                	in.nextLine();
                 	login(accountNo, pin);
                 }                 	
             }
         }
         
         public void login(long accountNo, int pin) {
-        	if (isValidLogin(accountNo, pin)) {
+        	if (isValidLogin(accountNo, pin)) {	
             	activeAccount = bank.login(accountNo, pin);
                 System.out.println("\nHello, again, " + activeAccount.getAccountHolder().getFirstName() + "!\n");
                 boolean validLogin = true;
@@ -71,7 +70,7 @@ public class ATM {
                         case DEPOSIT: deposit(); break;
                         case WITHDRAW: withdraw(); break;
                         case TRANSFER: transfer(); break;
-                        case LOGOUT: validLogin = false; break;
+                        case LOGOUT: validLogin = false; in.nextLine(); break;
                         default: System.out.println("\nInvalid selection.\n"); break;
                     }
                 }
@@ -219,23 +218,38 @@ public class ATM {
         }
             
         public void createAccount() {
-        	System.out.print("First Name: ");
+        	System.out.print("\nFirst Name: ");
         	String firstName = 	in.nextLine();
-        	
-        	System.out.print("Last Name: ");
-        	String lastName = in.nextLine();
-        	
-        	System.out.print("Pin: ");
-        	int pin = in.nextInt();
-        	in.nextLine();
-        	newUser = new User(firstName, lastName);
-        	
-        	BankAccount newAccount = bank.createAccount(pin, newUser);
-        	System.out.println(newAccount.getAccountNo());
-        	bank.update(newAccount);
-        	bank.save();
-        	return;
-        	
+        	if(firstName.length() <= 20 && firstName.length() > 0) {
+        		System.out.print("Last Name: ");
+            	String lastName = in.nextLine();
+            	if(lastName.length() <= 30 && lastName.length() > 0){
+            		System.out.print("Pin: ");               	
+                   	if(in.hasNextInt()) {
+                		int pin = in.nextInt();
+                		in.nextLine();
+                		if(pin >= 1000 && pin <= 9999) {
+                			newUser = new User(firstName, lastName);
+                        	
+                        	BankAccount newAccount = bank.createAccount(pin, newUser);
+                        	System.out.println("\nThank you. Your account number is " + newAccount.getAccountNo() + ".");
+                        	System.out.println("Please login to access your newly created account.\n");
+                        	bank.update(newAccount);
+                        	bank.save();
+                		}else {
+                			System.out.println("\nYou pin must be between 1000 and 9999.\n");
+                		}
+                		
+                    }else {
+                    	in.nextLine();
+                    	System.out.println("\nYou pin must be numeric.\n");
+                    }          	
+            	}else {
+            		System.out.println("\nYour last name must be between 1 and 30 characters long\n");
+            	}
+        	}else {
+        		System.out.println("\nYour first name must be between 1 and 20 characters long\n");
+        	}
         }
       
         public void shutdown() {
