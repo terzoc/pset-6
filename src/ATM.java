@@ -44,13 +44,22 @@ public class ATM {
          
             while (true) {
                 System.out.print("Account No.: ");
-                if(in.hasNextLong()) {
-                	accountNo = in.nextLong();
+                String accountNumberPlaceHolder = in.nextLine();
+                if(accountNumberPlaceHolder.isEmpty()) {
+                	accountNo = 0;
                 	pin = getPin();
                 	login(accountNo, pin);
-                }else if(in.nextLine().strip().equals("+")){
+                }else if(accountNumberPlaceHolder.strip().equals("+")){
                 	accountNo = 0;
                 	createAccount();
+                }else if(isAccountNumber(accountNumberPlaceHolder)) {
+                	accountNo = Long.valueOf(accountNumberPlaceHolder);
+                	pin = getPin();
+                	login(accountNo, pin);
+                }else if(accountNumberPlaceHolder.equals("-1")){
+                	accountNo = -1;
+                	pin = getPin();
+                	login(accountNo, pin);             
                 }else {
                 	accountNo = 0;
                 	pin = getPin();
@@ -82,16 +91,31 @@ public class ATM {
                 }
             }
         }
+        
+        public boolean isAccountNumber(String possibleNumber) {
+//        	System.out.println("actested");
+        	boolean isNumber = true;
+        	for (int i = 0; i < possibleNumber.length(); i++ ) {
+                char char1 = possibleNumber.charAt(i);
+                if (!Character.isDigit(char1)) {
+                  isNumber = false;
+                }
+              }
+        	return isNumber;
+        }
 
         public int getPin() {
+        	int pin = 0;
         	System.out.print("PIN        : ");
-            if(in.hasNextInt()) {
-            	return in.nextInt();
-            }else {
-            	in.nextLine();
-            	return 0;
-            	
-            }
+        	String pinPlaceHolder = in.nextLine();
+        	if(pinPlaceHolder.isEmpty()) {
+        		pin = 0;
+        	}else if(isAccountNumber(pinPlaceHolder)){
+        		pin = Integer.valueOf(pinPlaceHolder);
+        	}else if(pinPlaceHolder.equals("-1")) {
+        		pin = -1;
+        	}       	
+            return pin;
         }
         
         public boolean isValidLogin(long accountNo, int pin) {
@@ -218,32 +242,31 @@ public class ATM {
         }
             
         public void createAccount() {
+        	int pin = 0;
         	System.out.print("\nFirst Name: ");
         	String firstName = 	in.nextLine();
-        	if(firstName.length() <= 20 && firstName.length() > 0) {
+        	if(firstName != null && firstName.length() <= 20 && firstName.length() > 0) {
         		System.out.print("Last Name: ");
             	String lastName = in.nextLine();
-            	if(lastName.length() <= 30 && lastName.length() > 0){
-            		System.out.print("Pin: ");               	
-                   	if(in.hasNextInt()) {
-                		int pin = in.nextInt();
-                		in.nextLine();
-                		if(pin >= 1000 && pin <= 9999) {
-                			newUser = new User(firstName, lastName);
-                        	
-                        	BankAccount newAccount = bank.createAccount(pin, newUser);
-                        	System.out.println("\nThank you. Your account number is " + newAccount.getAccountNo() + ".");
-                        	System.out.println("Please login to access your newly created account.\n");
-                        	bank.update(newAccount);
-                        	bank.save();
-                		}else {
-                			System.out.println("\nYou pin must be between 1000 and 9999.\n");
-                		}
-                		
-                    }else {
-                    	in.nextLine();
-                    	System.out.println("\nYou pin must be numeric.\n");
-                    }          	
+            	if(lastName != null && lastName.length() <= 30 && lastName.length() > 0){
+            		System.out.print("Pin: ");     
+            		String pinPlaceHolder = in.nextLine();
+                	if(pinPlaceHolder.isEmpty()) {
+                		pin = 0;
+                	}else if(isAccountNumber(pinPlaceHolder)){
+                		pin = Integer.valueOf(pinPlaceHolder);
+                	}
+                	if(pin >= 1000 && pin <= 9999) {
+                		newUser = new User(firstName, lastName);
+                       	
+                       	BankAccount newAccount = bank.createAccount(pin, newUser);
+                       	System.out.println("\nThank you. Your account number is " + newAccount.getAccountNo() + ".");
+                       	System.out.println("Please login to access your newly created account.\n");
+                       	bank.update(newAccount);
+                       	bank.save();
+               		}else {
+               			System.out.println("\nYou pin must be between 1000 and 9999.\n");
+               		}         	
             	}else {
             		System.out.println("\nYour last name must be between 1 and 30 characters long\n");
             	}
